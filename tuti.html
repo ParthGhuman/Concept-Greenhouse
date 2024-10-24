@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Greenhouse Control Room</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #333;
+        }
+        .section p {
+            color: #666;
+        }
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .control-panel div {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        .monitor {
+            background-color: #b3e5fc;
+            border: 1px solid #0288d1;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .control-panel input[type="range"] {
+            width: 100%;
+        }
+        .alert {
+            color: red;
+            font-weight: bold;
+        }
+        .slider {
+            width: 50px;
+            height: 24px;
+            position: relative;
+        }
+        .slider input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider span {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider span:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        .slider input:checked + span {
+            background-color: #4CAF50;
+        }
+        .slider input:checked + span:before {
+            transform: translateX(26px);
+        }
+    </style>
+    <script>
+        function checkTemperature(value) {
+            const alert = document.getElementById('temp-alert');
+            document.getElementById('current-temp').innerText = value + '°C';
+            if (value < 10 || value > 35) {
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        }
+        function checkHumidity(value) {
+            const alert = document.getElementById('humidity-alert');
+            document.getElementById('current-humidity').innerText = value + '%';
+            if (value < 20 || value > 80) {
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        }
+        function checkMoisture(value) {
+            const alert = document.getElementById('moisture-alert');
+            document.getElementById('current-moisture').innerText = value + '%';
+            if (value < 10 || value > 100) {
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        }
+        function toggleControlMode() {
+            const isChecked = document.getElementById('control-mode').checked;
+            const ranges = document.querySelectorAll('.control-panel input[type="range"]');
+            ranges.forEach(range => {
+                range.disabled = !isChecked;
+                if (!isChecked) {
+                    range.value = range.defaultValue;
+                }
+            });
+            if (!isChecked) {
+                document.getElementById('current-temp').innerText = '24°C';
+                document.getElementById('current-humidity').innerText = '60%';
+                document.getElementById('current-moisture').innerText = '40%';
+                document.getElementById('temp-alert').style.display = 'none';
+                document.getElementById('humidity-alert').style.display = 'none';
+                document.getElementById('moisture-alert').style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Greenhouse Control Room</h1>
+        
+        <div class="section">
+            <h2>Welcome</h2>
+            <p>Welcome to the Greenhouse Control Room. Here you can monitor and adjust the conditions in your greenhouse to ensure optimal plant growth. Everything is controlled by AI.</p>
+        </div>
+        
+        <div class="section monitor">
+            <h2>Current Conditions</h2>
+            <p>Temperature: <span id="current-temp">24°C</span></p>
+            <p>Humidity: <span id="current-humidity">60%</span></p>
+            <p>Soil Moisture: <span id="current-moisture">40%</span></p>
+            <p>Oxygen Level: 20.9%</p>
+            <p>CO2 Level: 400 ppm</p>
+            <p>Nitrogen Level: 78%</p>
+        </div>
+        
+        <div class="section">
+            <h2>Control Mode</h2>
+            <label class="slider">
+                <input type="checkbox" id="control-mode" onchange="toggleControlMode()">
+                <span></span>
+            </label>
+            <span>Manual Mode</span>
+        </div>
+        
+        <div class="section control-panel">
+            <div>
+                <h2>Temperature Control</h2>
+                <p>Adjust the temperature:</p>
+                <input type="range" min="10" max="35" value="24" oninput="checkTemperature(this.value)" disabled>
+                <p id="temp-alert" class="alert" style="display:none;">Warning: Temperature out of optimal range!</p>
+            </div>
+            <div>
+                <h2>Humidity Control</h2>
+                <p>Adjust the humidity:</p>
+                <input type="range" min="20" max="80" value="60" oninput="checkHumidity(this.value)" disabled>
+                <p id="humidity-alert" class="alert" style="display:none;">Warning: Humidity out of optimal range!</p>
+            </div>
+            <div>
+                <h2>Soil Moisture Control</h2>
+                <p>Adjust the soil moisture:</p>
+                <input type="range" min="10" max="100" value="40" oninput="checkMoisture(this.value)" disabled>
+                <p id="moisture-alert" class="alert" style="display:none;">Warning: Soil moisture out of optimal range!</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Information</h2>
+            <p>This control room provides all the necessary tools to manage your greenhouse environment. Monitor the conditions and make adjustments as needed for optimal plant health.</p>
+        </div>
+    </div>
+</body>
+</html>
