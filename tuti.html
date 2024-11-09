@@ -2,217 +2,143 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Greenhouse Control Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thunder Strikers Cricket Club</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column; /* Ensures the heading is always on top */
+            background-color: #f4f4f4;
         }
-        .container {
-            width: 100%;
-            max-width: 600px; /* Adjusted for a broader size */
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-        }
-        h1 {
+        header {
+            background: #007bff;
+            color: white;
+            padding: 10px 0;
             text-align: center;
-            color: #4CAF50;
-            margin-top: 0; /* Ensure it shows at the top */
         }
-        .section {
-            margin-bottom: 20px;
+        section {
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .section h2 {
-            color: #333;
+        h2 {
+            color: #007bff;
         }
-        .section p {
-            color: #666;
-        }
-        .control-panel {
+        form {
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
-        .control-panel div {
-            width: 90%;
+        form input, form select {
+            margin: 10px 0;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #f9f9f9;
-            margin-bottom: 10px;
         }
-        .monitor {
-            background-color: #b3e5fc;
-            border: 1px solid #0288d1;
-            border-radius: 10px;
+        form button {
+            background: #007bff;
+            color: white;
+            border: none;
             padding: 10px;
-            margin-bottom: 20px;
-        }
-        .control-panel input[type="range"] {
-            width: 100%;
-        }
-        .alert {
-            color: red;
-            font-weight: bold;
-        }
-        .clicky-switch {
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-            background: #ccc;
-            border-radius: 15px;
-            position: relative;
             cursor: pointer;
+            border-radius: 5px;
         }
-        .clicky-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .clicky-switch span {
-            display: block;
-            width: 30px;
-            height: 30px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: .3s;
-        }
-        .clicky-switch input:checked + span {
-            left: 30px;
-        }
-        #mode-text {
-            margin-top: 10px;
-        }
-        .manual input[type="range"] {
-            background-color: green;
-        }
-        .auto input[type="range"] {
-            background-color: grey;
+        form button:hover {
+            background: #0056b3;
         }
     </style>
-    <script>
-        function checkTemperature(value) {
-            const alert = document.getElementById('temp-alert');
-            document.getElementById('current-temp').innerText = value + '°C';
-            if (value < 10 || value > 35) {
-                alert.style.display = 'block';
-            } else {
-                alert.style.display = 'none';
-            }
-        }
-        function checkHumidity(value) {
-            const alert = document.getElementById('humidity-alert');
-            document.getElementById('current-humidity').innerText = value + '%';
-            if (value < 20 || value > 80) {
-                alert.style.display = 'block';
-            } else {
-                alert.style.display = 'none';
-            }
-        }
-        function checkMoisture(value) {
-            const alert = document.getElementById('moisture-alert');
-            document.getElementById('current-moisture').innerText = value + '%';
-            if (value < 10 || value > 100) {
-                alert.style.display = 'block';
-            } else {
-                alert.style.display = 'none';
-            }
-        }
-        function toggleControlMode() {
-            const isChecked = document.getElementById('control-mode').checked;
-            const ranges = document.querySelectorAll('.control-panel input[type="range"]');
-            const modeText = document.getElementById('mode-text');
-            const controlPanel = document.querySelector('.control-panel');
-            ranges.forEach(range => {
-                range.disabled = !isChecked;
-                if (!isChecked) {
-                    range.value = range.defaultValue;
-                }
-            });
-            if (!isChecked) {
-                document.getElementById('current-temp').innerText = '24°C';
-                document.getElementById('current-humidity').innerText = '60%';
-                document.getElementId('current-moisture').innerText = '40%';
-                document.getElementById('temp-alert').style.display = 'none';
-                document.getElementById('humidity-alert').style.display = 'none';
-                document.getElementById('moisture-alert').style.display = 'none';
-                modeText.innerText = "Automatic Mode";
-                controlPanel.classList.remove('manual');
-                controlPanel.classList.add('auto');
-            } else {
-                modeText.innerText = "Manual Mode";
-                controlPanel.classList.remove('auto');
-                controlPanel.classList.add('manual');
-            }
-        }
-    </script>
 </head>
 <body>
-    <h1>Greenhouse Control Room</h1>
-    <div class="container">
-        <div class="section">
-            <h2>Welcome</h2>
-            <p>Welcome to the Greenhouse Control Room. Here you can monitor and adjust the conditions in your greenhouse to ensure optimal plant growth. Everything is controlled by AI.</p>
-        </div>
-        
-        <div class="section monitor">
-            <h2>Current Conditions</h2>
-            <p>Temperature: <span id="current-temp">24°C</span></p>
-            <p>Humidity: <span id="current-humidity">60%</span></p>
-            <p>Soil Moisture: <span id="current-moisture">40%</span></p>
-            <p>Oxygen Level: 20.9%</p>
-            <p>CO2 Level: 400 ppm</p>
-            <p>Nitrogen Level: 78%</p>
-        </div>
-        
-        <div class="section">
-            <h2>Control Mode</h2>
-            <label class="clicky-switch">
-                <input type="checkbox" id="control-mode" onchange="toggleControlMode()">
-                <span></span>
-            </label>
-            <div id="mode-text" style="text-align: center; margin-top: 10px;">Automatic Mode</div>
-        </div>
-        
-        <div class="section control-panel auto">
-            <div>
-                <h2>Temperature Control</h2>
-                <p>Adjust the temperature:</p>
-                <input type="range" min="10" max="35" value="24" oninput="checkTemperature(this.value)" disabled>
-                <p id="temp-alert" class="alert" style="display:none;">Warning: Temperature out of optimal range!</p>
-            </div>
-            <div>
-                <h2>Humidity Control</h2>
-                <p>Adjust the humidity:</p>
-                <input type="range" min="20" max="80" value="60" oninput="checkHumidity(this.value)" disabled>
-                <p id="humidity-alert" class="alert" style="display:none;">Warning: Humidity out of optimal range!</p>
-            </div>
-            <div>
-                <h2>Soil Moisture Control</h2>
-                <p>Adjust the soil moisture:</p>
-                <input type="range" min="10" max="100" value="40" oninput="checkMoisture(this.value)" disabled>
-                <p id="moisture-alert" class="alert" style="display:none;">Warning: Soil moisture out of optimal range!</p>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>Information</h2>
-            <p>This control room provides all the necessary tools to manage your greenhouse environment. Monitor the conditions and make adjustments as needed for optimal plant health.</p>
-        </div>
-    </div>
+
+<header>
+    <h1>Thunder Strikers Cricket Club</h1>
+</header>
+
+<section id="admission">
+    <h2>Admission</h2>
+    <form>
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="category">Membership Category:</label>
+        <select id="category" name="category" required>
+            <option value="kids1">Kids - $999</option>
+            <option value="kids2">Kids - $2300</option>
+            <option value="kids3">Kids - $1100</option>
+            <option value="adults1">Adults - $3100</option>
+            <option value="adults2">Adults - $1999</option>
+        </select>
+
+        <button type="submit">Submit Admission</button>
+    </form>
+</section>
+
+<section id="choose-us">
+    <h2>Why Choose Us</h2>
+    <p>We are digitally available</p>
+    <p>We are available at any time</p>
+    <p>We have experienced coaches</p>
+    <p>And our coaches have the best skills</p>
+</section>
+
+<section id="about-us">
+    <h2>About Us</h2>
+    <p><strong>Club History:</strong> Thunder Strikers was founded in 2020 with the aim of promoting cricket among the youth.</p>
+    <p><strong>Mission:</strong> To develop young talent and foster a love for cricket.</p>
+    <p><strong>Vision:</strong> To become a leading cricket club known for excellence in training and sportsmanship.</p>
+    <p><strong>Values:</strong> Integrity, Teamwork, Passion, and Excellence.</p>
+</section>
+
+<section id="contacts">
+    <h2>Club Contacts</h2>
+    <p><strong>Contact Details for Club Officials:</strong></p>
+    <p>Email: thunderstrikers@email.com</p>
+    <p>Phone: (123) 456-7890</p>
+    <p><strong>Coaches:</strong></p>
+    <ul>
+        <li>1. Parth</li>
+        <li>2. Aditiya</li>
+        <li>3. Akshay</li>
+        <li>4. Vian</li>
+        <li>5. Aarav</li>
+    </ul>
+</section>
+
+<section id="membership-info">
+    <h2>Membership Information</h2>
+    <ul>
+        <li>1. Kids Membership - $999</li>
+        <li>2. Kids Membership - $2300</li>
+        <li <li>3. Kids Membership - $1100</li>
+        <li>4. Adults Membership - $3100</li>
+        <li>5. Adults Membership - $1999</li>
+    </ul>
+</section>
+
+<section id="club-calendar">
+    <h2>Club Calendar</h2>
+    <p>Check our schedule for upcoming matches and events.</p>
+    <ul>
+        <li>March 15, 2023 - Season Opening Match</li>
+        <li>April 10, 2023 - Training Camp</li>
+        <li>May 5, 2023 - Annual Tournament</li>
+    </ul>
+</section>
+
+<footer>
+    <p>&copy; 2023 Thunder Strikers Cricket Club. All rights reserved.</p>
+</footer>
+
 </body>
 </html>
-
